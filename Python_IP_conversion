@@ -1,0 +1,66 @@
+print ('Cisco Programming Task')
+
+arr=[]   #List to store IP addresses
+a1=[]    #List to store its Binary form
+a2=[]    #List to store its Octal form
+a3=[]    #List to store its Hexadecimal form
+print()
+n=int(input("How many IPv4 address you want to enter : "))
+print()
+
+print("Enter the IPv4 addresses...")
+for i in range (n):
+   arr.append(str(input(" IP : ")))
+
+print()   
+print("IP addresses are : ",arr)                  #to print given IP addresses
+
+print()
+                                                  #check for IP addresses
+def isValidIP(s):
+ 
+    if s.count('.')!= 3:                      #check for periods(.)
+        return False
+
+        
+    l = list(map(str, s.split('.')))
+ 
+    for ele in l:                             #to check range(<255) 
+        if int(ele) < 0 or int(ele) > 255 or (ele[0]=='0' and len(ele)!=1):
+            return False
+        return True
+    
+for i in range(len(arr)): 
+    k=isValidIP(arr[i])
+
+if k==True:
+    print("IP address entered are valid")
+  
+    for i in range (n):
+        a1.append('.' .join(format(int(x), '08b') for x in arr[i].split('.')))
+        a2.append('.' .join(format(int(x), '04o') for x in arr[i].split('.')))   
+        a3.append('.' .join(format(int(x), '02x') for x in arr[i].split('.')))   
+    
+    f_arr = zip(arr,a1,a2,a3)
+
+    with open('conversion.csv', 'w') as f:
+        for (arr,a1,a2,a3) in f_arr:
+            f.write("{0},{1},{2},{3}\n".format(arr,a1,a2,a3))
+
+    print('File created')
+    print()
+    print("Reading from the file...")
+    print()
+    print(" IP ADDRESS               BINARY FORM              OCTAL FORM     HEXADECIMAL FORM")
+
+    with open('conversion.csv','r') as f1:
+        for x in f1.readlines():
+           print(x, end="")
+        
+if k==False:
+    print("IP address entered is not valid")
+
+#print(arr)
+#print(a1)
+#print(a2)
+#print(a3)
